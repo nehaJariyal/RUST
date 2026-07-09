@@ -1,46 +1,46 @@
 // ============================================================
-// TOPIC: Strings  (String aur &str ke saath kaam)
+// TOPIC: Strings  (working with String and &str)
 // ============================================================
 // Run:  rustc strings.rs && ./strings
 // ------------------------------------------------------------
-// String -> heap par, growable, owned.
-// &str   -> string slice, borrow kiya hua, fixed.
+// String -> on the heap, growable, owned.
+// &str   -> string slice, borrowed, fixed.
 
 fn main() {
-    // ---------- 1) String banana ----------
-    let mut s = String::new();       // khali
-    s.push_str("Namaste");           // string add
-    s.push(' ');                     // ek char add
+    // ---------- 1) Creating a String ----------
+    let mut s = String::new();       // empty
+    s.push_str("Namaste");           // add string
+    s.push(' ');                     // add one char
     s.push_str("Duniya");
     println!("s = {}", s);
 
-    let from = String::from("Rust");         // literal se
+    let from = String::from("Rust");         // from literal
     let to_owned = "Programming".to_string(); // &str -> String
     println!("{} {}", from, to_owned);
 
-    // ---------- 2) Jodna (concatenation) ----------
+    // ---------- 2) Concatenation ----------
     let hello = String::from("Hello");
     let world = String::from("World");
-    // format! sabse aasan (kisi ka ownership nahi jaata)
+    // format! is the easiest (no ownership is moved)
     let combined = format!("{}, {}!", hello, world);
     println!("format se = {}", combined);
 
-    // ---------- 3) Length aur properties ----------
+    // ---------- 3) Length and properties ----------
     println!("length (bytes) = {}", combined.len());
     println!("khali hai? {}", combined.is_empty());
     println!("'World' hai? {}", combined.contains("World"));
 
-    // ---------- 4) Case badalna ----------
+    // ---------- 4) Changing case ----------
     println!("Upper = {}", combined.to_uppercase());
     println!("Lower = {}", combined.to_lowercase());
 
-    // ---------- 5) Ghumna (chars) ----------
+    // ---------- 5) Iterating (chars) ----------
     for c in "abc".chars() {
         println!("char: {}", c);
     }
     println!("Total chars = {}", "namaste".chars().count());
 
-    // ---------- 6) Split karna ----------
+    // ---------- 6) Splitting ----------
     let csv = "neha,amit,priya";
     let names: Vec<&str> = csv.split(',').collect();
     println!("split se = {:?}", names);
@@ -48,7 +48,7 @@ fn main() {
         println!("Naam: {}", name);
     }
 
-    // ---------- 7) trim (aage-peeche ki space hatana) ----------
+    // ---------- 7) trim (remove leading/trailing spaces) ----------
     let messy = "   spaces around   ";
     println!("trim se = '{}'", messy.trim());
 

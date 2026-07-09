@@ -1,23 +1,23 @@
 // ============================================================
-// TOPIC: Slices  (collection ke ek HISSE ka reference)
+// TOPIC: Slices  (a reference to a PART of a collection)
 // ============================================================
 // Run:  rustc slices.rs && ./slices
 // ------------------------------------------------------------
-// Slice = kisi String ya Array ka ek continuous part, bina copy kiye.
-// Syntax:  &collection[start..end]   (end shamil NAHI hota)
+// Slice = a continuous part of a String or Array, without copying.
+// Syntax:  &collection[start..end]   (end is NOT included)
 
 fn main() {
     // ---------- 1) STRING slice (&str) ----------
     let sentence = String::from("Neha Rust seekh rahi hai");
 
-    // index 0 se 4 tak (5 shamil nahi) -> "Neha"
+    // index 0 to 4 (5 not included) -> "Neha"
     let first_word = &sentence[0..4];
-    // shortcut: shuru se -> [..4] , aakhir tak -> [5..]
+    // shortcuts: from start -> [..4] , to end -> [5..]
     let same_first = &sentence[..4];
     println!("Pehla shabd = '{}' (aur = '{}')", first_word, same_first);
 
-    // ---------- 2) Function ko slice bhejna ----------
-    // &str parameter String aur string literal dono accept kar leta hai
+    // ---------- 2) Passing a slice to a function ----------
+    // &str parameter accepts both String and string literals
     println!("get_first_word = '{}'", get_first_word(&sentence));
     println!("literal par bhi chalta hai = '{}'", get_first_word("Hello Duniya"));
 
@@ -27,26 +27,26 @@ fn main() {
     println!("Beech ka slice = {:?}", middle);
     println!("Slice ki length = {}", middle.len());
 
-    // Slice par bhi loop chala sakte hai
+    // You can also loop over a slice
     let mut sum = 0;
     for n in middle {
         sum += n;
     }
     println!("Slice ka sum = {}", sum);
 
-    // ---------- 4) Pura array as slice ----------
-    let full = &numbers[..]; // pura array ka slice
+    // ---------- 4) Entire array as a slice ----------
+    let full = &numbers[..]; // slice of the whole array
     println!("Pura slice = {:?}", full);
 }
 
-// Pehla shabd return karta hai (space milne tak)
-// &str return karte hai taaki original data ka hissa point kare
+// Returns the first word (until a space is found)
+// Returns &str so it points to a part of the original data
 fn get_first_word(s: &str) -> &str {
-    let bytes = s.as_bytes(); // string ko bytes me convert kiya
+    let bytes = s.as_bytes(); // converted string to bytes
     for (i, &item) in bytes.iter().enumerate() {
-        if item == b' ' {          // b' ' matlab space ka byte
-            return &s[0..i];       // space se pehle tak ka slice
+        if item == b' ' {          // b' ' means the byte for space
+            return &s[0..i];       // slice up to the space
         }
     }
-    &s[..] // agar space nahi mila to poori string
+    &s[..] // if no space found, return the whole string
 }

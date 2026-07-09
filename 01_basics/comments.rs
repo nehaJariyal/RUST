@@ -1,39 +1,39 @@
 // ============================================================
-// TOPIC: Comments in Rust  (comment likhne ke tarike)
+// TOPIC: Comments in Rust  (ways to write comments)
 // ============================================================
 // Run:  rustc comments.rs && ./comments
 // ------------------------------------------------------------
 
 // 1) LINE COMMENT
-// Ye // se start hoti hai aur line ke end tak chalti hai.
-// Compiler ise ignore kar deta hai.
+// These start with // and run until the end of the line.
+// The compiler ignores them.
 
 /*
  2) BLOCK COMMENT
- Ye /* se start aur */ par khatam hoti hai.
- Ek se zyada lines cover kar sakti hai.
- Block comments ke andar block comment /* nested */ bhi chalta hai (Rust me allowed).
+ These start with /* and end with */.
+ They can cover more than one line.
+ Block comments can be nested inside block comments /* like this */ (allowed in Rust).
 */
 
-/// 3) DOC COMMENT (outer) -> teen slash `///`
-/// Ye documentation ke liye hoti hai (function/struct ke UPAR likhte hai).
-/// `cargo doc` chalane par ye HTML docs me dikhti hai.
+/// 3) DOC COMMENT (outer) -> three slashes `///`
+/// These are for documentation (written ABOVE a function/struct).
+/// When you run `cargo doc`, they appear in the HTML docs.
 fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 
 fn main() {
-    //! Note: `//!` inner doc comment hoti hai jo apne parent item (module/file)
-    //! ko document karti hai. Ye kisi item ke ANDAR pehli line par aati hai.
+    //! Note: `//!` is an inner doc comment that documents its parent item (module/file).
+    //! It appears as the first line inside an item.
 
-    let x = 5 + /* beech me bhi comment daal sakte hai */ 5;
-    println!("x = {}", x); // isko 10 aana chahiye
+    let x = 5 + /* you can also put a comment in the middle */ 5;
+    println!("x = {}", x); // this should be 10
 
-    // Comments code samajhne aur explain karne ke liye bahut useful hote hai
-    let sum = add(4, 6); // add() function call kiya
+    // Comments are very useful for understanding and explaining code
+    let sum = add(4, 6); // called the add() function
     println!("add(4, 6) = {}", sum);
 
-    /* Neeche wali line comment ki hui hai isliye run nahi hogi:
+    /* The line below is commented out so it won't run:
     println!("Ye print nahi hoga");
     */
 

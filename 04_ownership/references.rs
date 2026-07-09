@@ -1,33 +1,33 @@
 // ============================================================
-// TOPIC: References  (& aur *  -  address aur dereference)
+// TOPIC: References  (& and *  -  address and dereference)
 // ============================================================
 // Run:  rustc references.rs && ./references
 // ------------------------------------------------------------
-// Reference = kisi value ka "pata" (address) jo use point karta hai
-// bina ownership liye.
-//   &x   -> x ka reference banao (borrow)
-//   *r   -> reference ke andar ki asli value tak jao (dereference)
+// Reference = a "pointer" to a value that lets you use it
+// without taking ownership.
+//   &x   -> create a reference to x (borrow)
+//   *r   -> go to the actual value inside the reference (dereference)
 
 fn main() {
-    // ---------- 1) Basic reference aur dereference ----------
+    // ---------- 1) Basic reference and dereference ----------
     let x = 10;
-    let r = &x;             // r, x ko point kar raha hai
+    let r = &x;             // r points to x
     println!("x = {}", x);
-    println!("r (reference) = {}", r);   // print me Rust khud dereference kar deta hai
-    println!("*r (dereference) = {}", *r); // manually * lagakar value
+    println!("r (reference) = {}", r);   // Rust auto-dereferences when printing
+    println!("*r (dereference) = {}", *r); // manually use * to get the value
 
-    // Compare karte waqt * ki zarurat padti hai
+    // * is needed when comparing
     if *r == 10 {
         println!("*r sach me 10 ke barabar hai");
     }
 
-    // ---------- 2) Mutable reference se value badalna ----------
+    // ---------- 2) Changing a value via mutable reference ----------
     let mut y = 5;
-    let m = &mut y; // y ka mutable reference
-    *m += 20;       // * se y ki asli value badli
+    let m = &mut y; // mutable reference to y
+    *m += 20;       // changed y's actual value with *
     println!("y ab = {}", y);
 
-    // ---------- 3) Reference function me bhejna (value change) ----------
+    // ---------- 3) Sending a reference to a function (changing value) ----------
     let mut count = 0;
     increment(&mut count);
     increment(&mut count);
@@ -36,18 +36,18 @@ fn main() {
     // ---------- 4) Reference of reference ----------
     let value = 99;
     let ref1 = &value;
-    let ref2 = &ref1;         // reference ka bhi reference
-    println!("**ref2 = {}", **ref2); // do baar dereference
+    let ref2 = &ref1;         // reference to a reference
+    println!("**ref2 = {}", **ref2); // dereference twice
 
-    // ---------- 5) Reference kabhi bhi dangling nahi hoti ----------
-    // Rust guarantee karta hai ki reference hamesha valid data ko point kare.
-    // Isliye niche wala function ERROR dega (uncomment karke dekh sakte ho):
+    // ---------- 5) References are never dangling ----------
+    // Rust guarantees that a reference always points to valid data.
+    // So the function below would ERROR (uncomment to try):
     //   fn dangle() -> &String { let s = String::from("x"); &s }
-    //   yaha s function ke saath drop ho jayega -> reference invalid
+    //   here s is dropped with the function -> reference would be invalid
     println!("References safe hote hai ✅");
 }
 
-// mutable reference leta hai aur value badhata hai
+// takes a mutable reference and increments the value
 fn increment(n: &mut i32) {
     *n += 1;
 }

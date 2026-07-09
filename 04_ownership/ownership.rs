@@ -1,60 +1,60 @@
 // ============================================================
-// TOPIC: Ownership  (Rust ka SABSE important concept)
+// TOPIC: Ownership  (Rust's MOST important concept)
 // ============================================================
 // Run:  rustc ownership.rs && ./ownership
 // ------------------------------------------------------------
-// Ownership ke 3 rules:
-//   1) Har value ka ek OWNER (maalik) hota hai.
-//   2) Ek time par SIRF EK owner hota hai.
-//   3) Jab owner scope se bahar jaata hai -> value memory se hat jati hai (drop).
-// Isi wajah se Rust ko garbage collector ki zarurat nahi padti.
+// The 3 rules of ownership:
+//   1) Every value has one OWNER.
+//   2) There can be only ONE owner at a time.
+//   3) When the owner goes out of scope -> value is removed from memory (drop).
+// This is why Rust doesn't need a garbage collector.
 
 fn main() {
-    // ---------- 1) SCOPE ka concept ----------
+    // ---------- 1) The concept of SCOPE ----------
     {
         let s = String::from("scope ke andar");
         println!("{}", s);
-    } // <- yaha `s` ka scope khatam, memory automatically free ho gayi
-    // println!("{}", s); // <-- ERROR: s ab exist nahi karta
+    } // <- here `s`'s scope ends, memory is automatically freed
+    // println!("{}", s); // <-- ERROR: s no longer exists
 
-    // ---------- 2) MOVE (heap data ka owner badalna) ----------
-    // String heap par banti hai. Jab dusre variable ko de do to
-    // ownership "move" ho jaati hai, purana variable invalid ho jaata hai.
+    // ---------- 2) MOVE (changing owner of heap data) ----------
+    // String is built on the heap. When you assign it to another variable,
+    // ownership "moves", and the old variable becomes invalid.
     let s1 = String::from("hello");
-    let s2 = s1; // ownership s1 -> s2 me MOVE ho gayi
-    // println!("{}", s1); // <-- ERROR: s1 ab valid nahi (moved)
-    println!("s2 = {}", s2); // s2 valid hai
+    let s2 = s1; // ownership MOVED from s1 -> s2
+    // println!("{}", s1); // <-- ERROR: s1 is no longer valid (moved)
+    println!("s2 = {}", s2); // s2 is valid
 
-    // ---------- 3) CLONE (asli copy banana) ----------
-    // Agar dono chahiye to .clone() se heap data ki poori copy banao.
+    // ---------- 3) CLONE (making a real copy) ----------
+    // If you need both, use .clone() to make a full copy of heap data.
     let a = String::from("duplicate");
-    let b = a.clone(); // ab a aur b dono alag alag apni value ke owner
+    let b = a.clone(); // now a and b each own their own separate value
     println!("a = {}, b = {}", a, b);
 
-    // ---------- 4) COPY types (stack par, move nahi hota) ----------
-    // i32, f64, bool, char, aur inke tuples "Copy" hote hai.
-    // Inme move ke bajaye simple copy hoti hai -> dono valid rehte hai.
+    // ---------- 4) COPY types (on the stack, no move) ----------
+    // i32, f64, bool, char, and tuples of these are "Copy".
+    // They get a simple copy instead of a move -> both stay valid.
     let x = 5;
-    let y = x; // copy hui, move nahi
+    let y = x; // copied, not moved
     println!("x = {}, y = {} (dono valid)", x, y);
 
-    // ---------- 5) Function ko value dena = ownership move ----------
+    // ---------- 5) Giving a value to a function = ownership move ----------
     let text = String::from("main function ko jaunga");
-    take_ownership(text); // ownership function ke andar move ho gayi
-    // println!("{}", text); // <-- ERROR: text moved ho chuka
+    take_ownership(text); // ownership moved into the function
+    // println!("{}", text); // <-- ERROR: text has been moved
 
-    // ---------- 6) Ownership wapas lena (return se) ----------
+    // ---------- 6) Getting ownership back (via return) ----------
     let given = String::from("data");
-    let returned = give_back(given); // andar gaya, wapas mila
+    let returned = give_back(given); // went in, came back out
     println!("wapas mila: {}", returned);
 }
 
-// Ye function String ka owner ban jaata hai, function khatam hote hi drop
+// This function becomes the owner of the String; when the function ends, it's dropped
 fn take_ownership(s: String) {
     println!("take_ownership ke andar: {}", s);
-} // yaha s drop ho jaata hai
+} // s is dropped here
 
-// Ownership andar leta hai aur return karke wapas de deta hai
+// Takes ownership inside and returns it back to the caller
 fn give_back(s: String) -> String {
-    s // ownership wapas caller ko chali jaati hai
+    s // ownership goes back to the caller
 }

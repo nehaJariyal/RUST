@@ -1,12 +1,12 @@
 // ============================================================
-// TOPIC: Structs  (apna custom data type banana)
+// TOPIC: Structs  (creating your own custom data type)
 // ============================================================
 // Run:  rustc structs.rs && ./structs
 // ------------------------------------------------------------
-// Struct = related data ko ek naam ke andar group karna.
-// (Jaise ek "Student" ke naam, age, marks ek saath.)
+// Struct = grouping related data under one name.
+// (Like putting a "Student"'s name, age, and marks together.)
 
-// #[derive(Debug)] -> taaki hum {:?} se poora struct print kar sake
+// #[derive(Debug)] -> so we can print the whole struct with {:?}
 #[derive(Debug)]
 struct Student {
     name: String, // field: type
@@ -16,7 +16,7 @@ struct Student {
 }
 
 fn main() {
-    // ---------- 1) Struct ka instance banana ----------
+    // ---------- 1) Creating a struct instance ----------
     let s1 = Student {
         name: String::from("Neha"),
         age: 21,
@@ -24,18 +24,18 @@ fn main() {
         is_pass: true,
     };
 
-    // Fields ko dot (.) se access karte hai
+    // Access fields with dot (.)
     println!("Naam: {}", s1.name);
     println!("Age: {}", s1.age);
     println!("Marks: {}", s1.marks);
 
-    // Poora struct debug print
+    // Debug print the whole struct
     println!("Pura struct = {:?}", s1);
-    // {:#?} -> pretty (sundar, multi-line) print
+    // {:#?} -> pretty (multi-line) print
     println!("Pretty:\n{:#?}", s1);
 
-    // ---------- 2) MUTABLE struct (fields badalna) ----------
-    // Pura instance mut hona chahiye tabhi koi field badal sakte hai
+    // ---------- 2) MUTABLE struct (changing fields) ----------
+    // The whole instance must be mut to change any field
     let mut s2 = Student {
         name: String::from("Amit"),
         age: 20,
@@ -46,23 +46,23 @@ fn main() {
     s2.is_pass = true;
     println!("Update ke baad: {:?}", s2);
 
-    // ---------- 3) Function se struct banana ----------
+    // ---------- 3) Creating a struct via a function ----------
     let s3 = build_student(String::from("Priya"), 22);
     println!("build_student se: {:?}", s3);
 
     // ---------- 4) STRUCT UPDATE syntax (..) ----------
-    // Baaki fields kisi aur instance se copy kar lo
+    // Copy the remaining fields from another instance
     let s4 = Student {
         name: String::from("Rahul"),
-        ..s3 // baaki age, marks, is_pass s3 se le lo
+        ..s3 // take age, marks, is_pass from s3
     };
     println!("Update syntax se: {:?}", s4);
 }
 
-// Function jo Student return karta hai
+// Function that returns a Student
 fn build_student(name: String, age: u32) -> Student {
     Student {
-        name, // field aur variable ka naam same ho to chhota likh sakte hai
+        name, // shorthand when field and variable have the same name
         age,
         marks: 0.0,
         is_pass: false,

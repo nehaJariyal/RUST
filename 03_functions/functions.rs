@@ -1,44 +1,44 @@
 // ============================================================
-// TOPIC: Functions  (fn se apna kaam ka block banana)
+// TOPIC: Functions  (creating reusable blocks of work with fn)
 // ============================================================
 // Run:  rustc functions.rs && ./functions
 // ------------------------------------------------------------
-// Function banane ka syntax:  fn naam(parameters) -> return_type { body }
-// Rust me function ka order matter nahi karta -> main ke neeche wale
-// functions bhi call ho jate hai.
+// Syntax for creating a function:  fn name(parameters) -> return_type { body }
+// In Rust, function order doesn't matter -> functions defined below main
+// can still be called.
 
 fn main() {
-    // 1) Simple function call (koi parameter nahi, kuch return nahi)
+    // 1) Simple function call (no parameters, no return value)
     greet();
 
-    // 2) Function jisme parameter jaata hai
+    // 2) Function that takes parameters
     say_hello("Neha");
 
-    // 3) Function jo value return karta hai
+    // 3) Function that returns a value
     let total = add(10, 20);
     println!("add(10, 20) = {}", total);
 
-    // 4) Ek function dusre function ko call kar sakta hai
+    // 4) One function can call another function
     let avg = average(80, 90);
     println!("average = {}", avg);
 
-    // 5) Function ko variable me store karke call karna (function pointer)
-    let operation = multiply;      // function ka naam bina () ke
+    // 5) Store a function in a variable and call it (function pointer)
+    let operation = multiply;      // function name without ()
     println!("multiply via variable = {}", operation(4, 5));
 }
 
-// Bina parameter, bina return value ka function
+// Function with no parameters and no return value
 fn greet() {
     println!("Namaste! functions seekh rahe hai 🦀");
 }
 
-// Parameter leta hai (name: &str)
+// Takes a parameter (name: &str)
 fn say_hello(name: &str) {
     println!("Hello, {}!", name);
 }
 
-// Do number leta hai aur unka sum return karta hai
-// NOTE: aakhri line par semicolon NAHI -> wahi expression return hoti hai
+// Takes two numbers and returns their sum
+// NOTE: no semicolon on the last line -> that expression is returned
 fn add(a: i32, b: i32) -> i32 {
     a + b
 }
@@ -47,7 +47,7 @@ fn multiply(a: i32, b: i32) -> i32 {
     a * b
 }
 
-// Ek function jo andar hi dusra function (add) use karta hai
+// A function that uses another function (add) internally
 fn average(a: i32, b: i32) -> i32 {
     let sum = add(a, b);
     sum / 2

@@ -1,10 +1,10 @@
 // ============================================================
-// TOPIC: Enums  (ek type jiske kai possible "roop" ho)
+// TOPIC: Enums  (one type with many possible "forms")
 // ============================================================
 // Run:  rustc enums.rs && ./enums
 // ------------------------------------------------------------
-// Enum = "enumeration". Ek value jo kai variants me se ek ho sakti hai.
-// Har variant apne saath data bhi rakh sakta hai.
+// Enum = "enumeration". A value that can be one of several variants.
+// Each variant can also carry its own data.
 
 #[derive(Debug)]
 enum Direction {
@@ -14,16 +14,16 @@ enum Direction {
     West,
 }
 
-// Variants jo alag alag tarah ka data rakhte hai
+// Variants that hold different kinds of data
 #[derive(Debug)]
 enum Message {
-    Quit,                       // koi data nahi
-    Move { x: i32, y: i32 },    // struct jaisa named data
-    Write(String),              // ek String
-    ChangeColor(u8, u8, u8),    // teen values (tuple jaisa)
+    Quit,                       // no data
+    Move { x: i32, y: i32 },    // named data like a struct
+    Write(String),              // one String
+    ChangeColor(u8, u8, u8),    // three values (tuple-like)
 }
 
-// Enum ke saath bhi methods likh sakte hai (impl)
+// You can also write methods on enums (impl)
 impl Message {
     fn describe(&self) -> String {
         match self {
@@ -42,7 +42,7 @@ fn main() {
     move_player(Direction::North);
     move_player(dir);
 
-    // ---------- 2) Data wale enum + method ----------
+    // ---------- 2) Data-carrying enum + method ----------
     let messages = [
         Message::Quit,
         Message::Move { x: 10, y: 20 },
@@ -55,7 +55,7 @@ fn main() {
     }
 }
 
-// Function jo enum ke variant ke hisaab se kaam kare
+// Function that acts based on the enum variant
 fn move_player(dir: Direction) {
     match dir {
         Direction::North => println!("Upar gaye"),

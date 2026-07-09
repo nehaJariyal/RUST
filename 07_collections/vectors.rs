@@ -1,27 +1,27 @@
 // ============================================================
-// TOPIC: Vectors (Vec<T>)  (badhne-ghatne wali list)
+// TOPIC: Vectors (Vec<T>)  (growable list)
 // ============================================================
 // Run:  rustc vectors.rs && ./vectors
 // ------------------------------------------------------------
-// Vec = same type ki values ka growable (badhne wala) collection.
-// Array fixed size ka hota hai, Vec ki size runtime par badal sakti hai.
+// Vec = a growable collection of values of the same type.
+// Array has fixed size; Vec's size can change at runtime.
 
 fn main() {
-    // ---------- 1) Vector banana ----------
-    let mut nums: Vec<i32> = Vec::new(); // khali vector
-    nums.push(10); // end me add
+    // ---------- 1) Creating a vector ----------
+    let mut nums: Vec<i32> = Vec::new(); // empty vector
+    nums.push(10); // add at the end
     nums.push(20);
     nums.push(30);
     println!("nums = {:?}", nums);
 
-    // vec! macro se ek saath banana
+    // create all at once with vec! macro
     let mut fruits = vec!["aam", "seb", "kela"];
     println!("fruits = {:?}", fruits);
 
-    // ---------- 2) Access karna ----------
-    // (a) index se -> galat index par PANIC ho jata hai
+    // ---------- 2) Accessing elements ----------
+    // (a) by index -> PANIC on invalid index
     println!("Pehla fruit = {}", fruits[0]);
-    // (b) .get() -> Option deta hai (safe)
+    // (b) .get() -> returns Option (safe)
     match fruits.get(10) {
         Some(f) => println!("index 10 = {}", f),
         None => println!("index 10 par kuch nahi (safe)"),
@@ -30,18 +30,18 @@ fn main() {
     // ---------- 3) Update / remove ----------
     fruits[1] = "angoor"; // seb -> angoor
     fruits.push("santra");
-    let removed = fruits.pop(); // end se nikaalta hai -> Option
+    let removed = fruits.pop(); // removes from end -> Option
     println!("nikala = {:?}, ab fruits = {:?}", removed, fruits);
-    fruits.remove(0); // index 0 wala hatao
+    fruits.remove(0); // remove element at index 0
     println!("index 0 hatane ke baad = {:?}", fruits);
 
-    // ---------- 4) Loop chalana ----------
+    // ---------- 4) Looping ----------
     for n in &nums {
         println!("num: {}", n);
     }
-    // mutable loop -> har value ko badalna
+    // mutable loop -> change each value
     for n in &mut nums {
-        *n *= 2; // dugna
+        *n *= 2; // double
     }
     println!("dugna karne ke baad nums = {:?}", nums);
 
@@ -50,7 +50,7 @@ fn main() {
     println!("khali hai? {}", nums.is_empty());
     println!("20 hai? {}", nums.contains(&20));
 
-    // sum aur max (iterator methods)
+    // sum and max (iterator methods)
     let total: i32 = nums.iter().sum();
     let max = nums.iter().max();
     println!("total = {}, max = {:?}", total, max);

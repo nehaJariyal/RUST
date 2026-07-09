@@ -1,10 +1,10 @@
 // ============================================================
-// TOPIC: match  (powerful switch jaisa, har case handle karta hai)
+// TOPIC: match  (powerful switch-like, handles every case)
 // ============================================================
 // Run:  rustc match.rs && ./match
 // ------------------------------------------------------------
-// match ka rule: EXHAUSTIVE hona chahiye matlab saari possibilities
-// cover karni padti hai (warna compiler error deta hai).
+// match rule: must be EXHAUSTIVE, meaning all possibilities
+// must be covered (otherwise the compiler gives an error).
 
 fn main() {
     // ---------- 1) SIMPLE match on integer ----------
@@ -15,12 +15,12 @@ fn main() {
         3 => "Budhwar",
         4 => "Guruwar",
         5 => "Shukrawar",
-        // `_` matlab "baaki sab" (default case)
+        // `_` means "everything else" (default case)
         _ => "Weekend",
     };
     println!("Day {} = {}", day, name);
 
-    // ---------- 2) Ek arm me multiple values (|) aur range (..=) ----------
+    // ---------- 2) Multiple values in one arm (|) and range (..=) ----------
     let number = 7;
     match number {
         0 => println!("Zero"),
@@ -29,8 +29,8 @@ fn main() {
         _ => println!("Bada number"),
     }
 
-    // ---------- 3) match VALUE ko bind karna ----------
-    // Range match karke actual value pakad sakte hai
+    // ---------- 3) Binding the matched VALUE ----------
+    // Match a range and capture the actual value
     let age = 25;
     match age {
         n @ 0..=12 => println!("Bachcha, umar {}", n),
@@ -46,8 +46,8 @@ fn main() {
         _ => println!("Kuch aur"),
     }
 
-    // ---------- 5) match Option (Some / None) ----------
-    // Option ek enum hai: value ho sakti hai (Some) ya na ho (None)
+    // ---------- 5) match on Option (Some / None) ----------
+    // Option is an enum: value may exist (Some) or not (None)
     let maybe_value: Option<i32> = Some(10);
     match maybe_value {
         Some(v) => println!("Value mili: {}", v),
