@@ -1,27 +1,27 @@
 // ============================================================
-// TOPIC: Pattern Matching  (values ko todkar unke andar jhaankna)
+// TOPIC: Pattern Matching  (breaking values apart to look inside)
 // ============================================================
 // Run:  rustc pattern_matching.rs && ./pattern_matching
 // ------------------------------------------------------------
-// Pattern matching sirf match tak simit nahi hai. Ye let, if let,
-// while let, for aur tuple/struct destructuring me bhi use hota hai.
+// Pattern matching is not limited to match. It's also used in let,
+// if let, while let, for, and tuple/struct destructuring.
 
-// Ek enum banate hai taaki uspar pattern match dikha sake
+// Create an enum so we can demonstrate pattern matching on it
 #[derive(Debug)]
 enum Shape {
-    Circle(f64),           // ek value: radius
-    Rectangle(f64, f64),   // do value: width, height
-    Point,                 // koi value nahi
+    Circle(f64),           // one value: radius
+    Rectangle(f64, f64),   // two values: width, height
+    Point,                 // no values
 }
 
 fn main() {
-    // ---------- 1) let se DESTRUCTURING (tuple todna) ----------
+    // ---------- 1) DESTRUCTURING with let (breaking apart a tuple) ----------
     let point = (3, 5);
-    let (x, y) = point; // tuple ko x aur y me tod diya
+    let (x, y) = point; // tuple split into x and y
     println!("x = {}, y = {}", x, y);
 
-    // ---------- 2) if let -> jab sirf EK case me interest ho ----------
-    // Poora match likhne ke bajaye chhota shortcut.
+    // ---------- 2) if let -> when you only care about ONE case ----------
+    // A short shortcut instead of writing a full match.
     let some_number: Option<i32> = Some(42);
     if let Some(n) = some_number {
         println!("if let se value mili: {}", n);
@@ -29,14 +29,14 @@ fn main() {
         println!("None tha");
     }
 
-    // ---------- 3) while let -> jab tak pattern match ho tab tak loop ----------
+    // ---------- 3) while let -> loop as long as the pattern matches ----------
     let mut stack = vec![1, 2, 3];
-    // pop() Option deta hai: Some(value) ya None (jab khali ho jaye)
+    // pop() returns Option: Some(value) or None (when empty)
     while let Some(top) = stack.pop() {
         println!("Stack se nikala: {}", top);
     }
 
-    // ---------- 4) enum ke andar ki values nikalna ----------
+    // ---------- 4) Extracting values inside an enum ----------
     let shapes = [Shape::Circle(2.0), Shape::Rectangle(3.0, 4.0), Shape::Point];
     for shape in shapes {
         match shape {
@@ -46,8 +46,8 @@ fn main() {
         }
     }
 
-    // ---------- 5) `_` aur `..` se cheezein ignore karna ----------
+    // ---------- 5) Ignoring parts with `_` and `..` ----------
     let numbers = (1, 2, 3, 4, 5);
-    let (first, .., last) = numbers; // beech ke ignore, sirf pehla aur aakhri
+    let (first, .., last) = numbers; // ignore the middle, keep only first and last
     println!("Pehla = {}, aakhri = {}", first, last);
 }

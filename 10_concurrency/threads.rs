@@ -1,49 +1,49 @@
 // ============================================================
-// TOPIC: Threads  (ek saath kai kaam - parallel execution)
+// TOPIC: Threads  (multiple tasks at once - parallel execution)
 // ============================================================
 // Run:  rustc threads.rs && ./threads
 // ------------------------------------------------------------
-// Thread = program ke andar ek alag "chalne wala rasta". Kai threads
-// ek saath (parallel) kaam karte hai. std::thread se banate hai.
+// Thread = a separate "path of execution" inside a program. Multiple threads
+// work at the same time (in parallel). Created with std::thread.
 
 use std::thread;
 use std::time::Duration;
 
 fn main() {
-    // ---------- 1) Naya thread banana (spawn) ----------
-    // spawn ek nayi thread shuru karta hai jo closure ko chalati hai.
+    // ---------- 1) Creating a new thread (spawn) ----------
+    // spawn starts a new thread that runs the closure.
     let handle = thread::spawn(|| {
         for i in 1..=5 {
             println!("  [naya thread] gin raha: {}", i);
-            thread::sleep(Duration::from_millis(10)); // thoda ruko
+            thread::sleep(Duration::from_millis(10)); // pause briefly
         }
     });
 
-    // Main thread apna kaam karta rahega saath me
+    // Main thread keeps doing its own work alongside
     for i in 1..=3 {
         println!("[main thread] kaam: {}", i);
         thread::sleep(Duration::from_millis(10));
     }
 
-    // ---------- 2) join() -> thread ke khatam hone ka intezaar ----------
-    // Agar join na kare to main pehle khatam ho sakta hai aur naya
-    // thread apna kaam poora nahi kar payega.
+    // ---------- 2) join() -> wait for the thread to finish ----------
+    // Without join, main may finish first and the new
+    // thread may not complete its work.
     handle.join().unwrap();
     println!("Naya thread khatam ho gaya");
 
-    // ---------- 3) move closure -> data thread ko de dena ----------
-    // `move` keyword se variable ki ownership thread ke andar chali jaati hai
+    // ---------- 3) move closure -> give data to the thread ----------
+    // `move` keyword moves variable ownership into the thread
     let numbers = vec![1, 2, 3, 4, 5];
     let handle2 = thread::spawn(move || {
         let sum: i32 = numbers.iter().sum();
         println!("Thread ke andar sum = {}", sum);
-        sum // thread value bhi return kar sakti hai
+        sum // a thread can also return a value
     });
-    // join() se return value bhi milti hai
+    // join() also gives back the return value
     let result = handle2.join().unwrap();
     println!("Thread se mila result = {}", result);
 
-    // ---------- 4) Kai threads ek saath ----------
+    // ---------- 4) Multiple threads at once ----------
     let mut handles = vec![];
     for id in 1..=3 {
         let h = thread::spawn(move || {
@@ -51,7 +51,7 @@ fn main() {
         });
         handles.push(h);
     }
-    // sabka intezaar
+    // wait for all of them
     for h in handles {
         h.join().unwrap();
     }

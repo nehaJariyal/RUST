@@ -1,58 +1,58 @@
 // ============================================================
-// TOPIC: Borrowing  (ownership diye bina value udhaar dena)
+// TOPIC: Borrowing  (lending a value without giving ownership)
 // ============================================================
 // Run:  rustc borrowing.rs && ./borrowing
 // ------------------------------------------------------------
-// Har baar ownership move karna painful hai. Isliye Rust me hum
-// value ko "borrow" (udhaar) kar sakte hai `&` (reference) se.
-// Borrowing ke rules:
-//   * Ya to KAI immutable borrow (&)  ...ek saath allowed
-//   * Ya SIRF EK mutable borrow (&mut) ...tab koi aur borrow nahi
-//   (ye rule "data race" ko compile time par hi rok deta hai)
+// Moving ownership every time is painful. So in Rust we can
+// "borrow" a value using `&` (reference).
+// Borrowing rules:
+//   * Either MANY immutable borrows (&)  ...allowed at the same time
+//   * Or ONLY ONE mutable borrow (&mut) ...no other borrows at that time
+//   (this rule stops "data races" at compile time)
 
 fn main() {
     // ---------- 1) IMMUTABLE borrow (& ) ----------
-    // Function ko reference bhejte hai -> ownership nahi jaati.
+    // Send a reference to the function -> ownership does not move.
     let s = String::from("hello");
-    let len = calculate_length(&s); // &s = s ka reference udhaar diya
+    let len = calculate_length(&s); // &s = borrowed a reference to s
     println!("'{}' ki length = {} (s abhi bhi mera hai)", s, len);
 
-    // ---------- 2) Ek saath kai immutable borrow ----------
+    // ---------- 2) Many immutable borrows at the same time ----------
     let data = String::from("shared");
     let r1 = &data;
-    let r2 = &data; // dono theek hai kyunki dono sirf padh rahe hai
+    let r2 = &data; // both are fine because both are only reading
     println!("r1 = {}, r2 = {}", r1, r2);
 
     // ---------- 3) MUTABLE borrow (&mut) ----------
-    // Isse function value ko badal bhi sakta hai.
+    // This lets the function also change the value.
     let mut word = String::from("Hi");
-    change(&mut word); // mutable reference diya
+    change(&mut word); // gave a mutable reference
     println!("change ke baad word = {}", word);
 
-    // ---------- 4) Ek time par sirf EK mutable borrow ----------
+    // ---------- 4) Only ONE mutable borrow at a time ----------
     let mut num = 10;
     {
-        let m = &mut num; // ek mutable borrow
-        *m += 5;          // * se andar ki value badli
+        let m = &mut num; // one mutable borrow
+        *m += 5;          // changed the inner value with *
         println!("m = {}", m);
-    } // m ka scope khatam -> ab dubara borrow kar sakte hai
+    } // m's scope ends -> can borrow again now
     let m2 = &mut num;
     *m2 += 100;
     println!("num final = {}", m2);
 
-    // NOTE: neeche wala combination ERROR deta hai -
-    // ek mutable aur ek immutable borrow ek saath allowed nahi:
+    // NOTE: the combination below gives an ERROR -
+    // one mutable and one immutable borrow at the same time is not allowed:
     //   let r = &num;
     //   let w = &mut num;   // ERROR
     //   println!("{} {}", r, w);
 }
 
-// & se borrow: hum sirf padh sakte hai, badal nahi sakte
+// & borrow: we can only read, not change
 fn calculate_length(s: &String) -> usize {
     s.len()
-} // s yaha drop nahi hota kyunki iska owner koi aur hai
+} // s is not dropped here because its owner is someone else
 
-// &mut se borrow: hum value ko badal sakte hai
+// &mut borrow: we can change the value
 fn change(s: &mut String) {
-    s.push_str(" Rust"); // asli string me add ho jayega
+    s.push_str(" Rust"); // will be added to the original string
 }

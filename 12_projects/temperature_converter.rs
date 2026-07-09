@@ -3,7 +3,7 @@
 // ============================================================
 // Run:  rustc temperature_converter.rs && ./temperature_converter
 // ------------------------------------------------------------
-// Use kiya: functions, loops, formatting, thoda math.
+// Concepts used: functions, loops, formatting, a bit of math.
 
 // Celsius -> Fahrenheit :  F = (C * 9/5) + 32
 fn celsius_to_fahrenheit(c: f64) -> f64 {
@@ -23,7 +23,7 @@ fn celsius_to_kelvin(c: f64) -> f64 {
 fn main() {
     println!("===== Temperature Converter =====\n");
 
-    // ---------- 1) Ek single conversion ----------
+    // ---------- 1) A single conversion ----------
     let temp_c = 37.0;
     println!(
         "{}°C = {:.1}°F = {:.2}K",
@@ -32,19 +32,19 @@ fn main() {
         celsius_to_kelvin(temp_c)
     );
 
-    // {:.1} matlab 1 decimal place tak, {:.2} matlab 2 decimal tak
+    // {:.1} means up to 1 decimal place, {:.2} means 2 decimals
 
-    // ---------- 2) Ek table banate hai (loop se) ----------
+    // ---------- 2) Build a table (with a loop) ----------
     println!("\nCelsius  ->  Fahrenheit");
     println!("------------------------");
-    // 0 se 100 tak, 20 ke gap me
+    // from 0 to 100, in steps of 20
     let mut c = 0.0;
     while c <= 100.0 {
         println!("{:>6.1}   ->  {:>7.1}", c, celsius_to_fahrenheit(c));
         c += 20.0;
     }
 
-    // ---------- 3) Reverse check (waapas Celsius) ----------
+    // ---------- 3) Reverse check (back to Celsius) ----------
     let f = 98.6;
     println!("\n{}°F waapas Celsius me = {:.1}°C", f, fahrenheit_to_celsius(f));
 

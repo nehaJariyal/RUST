@@ -3,10 +3,10 @@
 // ============================================================
 // Run:  rustc todo_list.rs && ./todo_list
 // ------------------------------------------------------------
-// Use kiya: struct, impl/methods, Vec, enum, Option, iterators, format.
-// Ye saare concepts ek chhote real project me ek saath dikhata hai.
+// Concepts used: struct, impl/methods, Vec, enum, Option, iterators, format.
+// This shows all these concepts together in a small real project.
 
-// Ek task ki priority
+// Priority of a task
 #[derive(Debug, PartialEq)]
 enum Priority {
     Low,
@@ -14,7 +14,7 @@ enum Priority {
     High,
 }
 
-// Ek single task
+// A single task
 struct Task {
     id: u32,
     title: String,
@@ -22,14 +22,14 @@ struct Task {
     priority: Priority,
 }
 
-// Poori to-do list (tasks ka collection)
+// The full to-do list (collection of tasks)
 struct TodoList {
     tasks: Vec<Task>,
-    next_id: u32, // agla id kya dena hai
+    next_id: u32, // what id to assign next
 }
 
 impl TodoList {
-    // Nayi khaali list banata hai
+    // Creates a new empty list
     fn new() -> TodoList {
         TodoList {
             tasks: Vec::new(),
@@ -37,7 +37,7 @@ impl TodoList {
         }
     }
 
-    // Naya task add karta hai
+    // Adds a new task
     fn add(&mut self, title: &str, priority: Priority) {
         let task = Task {
             id: self.next_id,
@@ -49,9 +49,9 @@ impl TodoList {
         self.next_id += 1;
     }
 
-    // id se task ko "done" mark karta hai
+    // Marks a task as "done" by id
     fn complete(&mut self, id: u32) {
-        // iter_mut -> tasks ko badalne ke liye
+        // iter_mut -> for mutating tasks
         for task in self.tasks.iter_mut() {
             if task.id == id {
                 task.done = true;
@@ -61,7 +61,7 @@ impl TodoList {
         println!("(id {} ka koi task nahi mila)", id);
     }
 
-    // Saari tasks print karta hai
+    // Prints all tasks
     fn show(&self) {
         println!("\n===== MERI TO-DO LIST =====");
         if self.tasks.is_empty() {
@@ -69,13 +69,13 @@ impl TodoList {
             return;
         }
         for task in &self.tasks {
-            // done hai to [x], warna [ ]
+            // [x] if done, [ ] otherwise
             let mark = if task.done { "[x]" } else { "[ ]" };
             println!("{} #{} {} ({:?})", mark, task.id, task.title, task.priority);
         }
     }
 
-    // Kitne tasks baaki hai (pending) - count nikalta hai
+    // How many tasks are left (pending) - counts them
     fn pending_count(&self) -> usize {
         self.tasks.iter().filter(|t| !t.done).count()
     }
@@ -84,7 +84,7 @@ impl TodoList {
 fn main() {
     let mut list = TodoList::new();
 
-    // Kuch tasks add karte hai
+    // Add some tasks
     list.add("Rust padhna", Priority::High);
     list.add("Khana banana", Priority::Medium);
     list.add("Movie dekhna", Priority::Low);
@@ -93,7 +93,7 @@ fn main() {
     list.show();
     println!("Pending tasks: {}", list.pending_count());
 
-    // Kuch tasks complete karte hai
+    // Complete some tasks
     println!("\n>> Task #1 aur #3 complete kar rahe hai...");
     list.complete(1);
     list.complete(3);
@@ -101,7 +101,7 @@ fn main() {
     list.show();
     println!("Pending tasks: {}", list.pending_count());
 
-    // High priority pending tasks dhoondhna (filter example)
+    // Find high priority pending tasks (filter example)
     println!("\n>> High priority pending tasks:");
     for task in list.tasks.iter().filter(|t| !t.done && t.priority == Priority::High) {
         println!("  - {}", task.title);

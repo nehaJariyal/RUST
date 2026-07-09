@@ -1,43 +1,43 @@
 // ============================================================
-// TOPIC: ? operator  (error ko aage bhejne ka shortcut)
+// TOPIC: ? operator  (shortcut for propagating errors)
 // ============================================================
 // Run:  rustc question_mark.rs && ./question_mark
 // ------------------------------------------------------------
-// `?` operator ka kaam:
-//   * agar Result Ok(v) hai -> v nikaal deta hai aur aage chalta hai
-//   * agar Err(e) hai       -> turant us error ko RETURN kar deta hai
-// Isse bar-bar match likhne ki zarurat nahi padti. Bahut clean code.
+// What the `?` operator does:
+//   * if Result is Ok(v) -> unwraps v and continues
+//   * if Err(e)          -> immediately RETURNS that error
+// This avoids writing match over and over. Very clean code.
 
 fn main() {
-    // ? use karne wala function khud Result return karta hai,
-    // isliye main me uska result match/print karte hai.
+    // A function using ? must itself return Result,
+    // so in main we match/print its result.
     match calculate("10", "2") {
         Ok(result) => println!("10 + 2 phir /2... = {}", result),
         Err(e) => println!("Error: {}", e),
     }
 
-    // Yaha "abc" parse fail hoga -> ? turant Err return karega
+    // Here "abc" will fail to parse -> ? will immediately return Err
     match calculate("abc", "2") {
         Ok(result) => println!("Result = {}", result),
-        Err(e) => println!("Error: {}", e), // ye chalega
+        Err(e) => println!("Error: {}", e), // this will run
     }
 
-    // Yaha divide by zero
+    // Here divide by zero
     match calculate("10", "0") {
         Ok(result) => println!("Result = {}", result),
-        Err(e) => println!("Error: {}", e), // ye chalega
+        Err(e) => println!("Error: {}", e), // this will run
     }
 }
 
-// Do string leta hai, dono parse karta hai, jodta hai, phir 2 se divide.
-// Har step Result deta hai -> `?` se error automatically aage chala jaata hai.
+// Takes two strings, parses both, adds them, then divides by 2.
+// Each step returns Result -> `?` automatically propagates errors.
 fn calculate(a: &str, b: &str) -> Result<i32, String> {
-    // parse Result deta hai. Agar Err hua to yahi se return ho jayega.
-    let x = parse_number(a)?; // <-- ? ka jaadu
+    // parse returns Result. If Err, returns from here.
+    let x = parse_number(a)?; // <-- the magic of ?
     let y = parse_number(b)?;
 
     let sum = x + y;
-    let result = divide(sum, 2)?; // divide bhi Result deta hai
+    let result = divide(sum, 2)?; // divide also returns Result
     Ok(result)
 }
 

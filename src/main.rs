@@ -47,7 +47,7 @@ println!("{}", result);
 
 
 }
-//   learn data types
+// learn data types
 
 fn datatypes() {
     let mut vl: Value = Value::Float(1.20);
@@ -62,7 +62,7 @@ fn datatypes() {
     println!("{:?}", vl);
 }
 
-//  learn if  else
+// learn if else
 
 fn oddeven() {
     let score = 1;
@@ -76,7 +76,7 @@ fn oddeven() {
     let result = if number < 10 { "Too small" } else { "100" };
     println!("{}", result);
 }
-//  learn loop
+// learn loops
 fn itrations(){
 //     let mut count=1;
 // let result= loop {
@@ -90,14 +90,14 @@ fn itrations(){
 // println!("The loop stopped at: {}", result);
 
 
-// //  while loop
+// // while loop
 
 //  let mut  values =1;
 //  while values <= 10 {
 //     println!("{}",values) ;
 //     values= values+1;
 //  };
-// //  for loop
+// // for loop
  for i in 1..16 {
     println!("i is: {}",i)
  }

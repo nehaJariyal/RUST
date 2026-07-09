@@ -1,13 +1,13 @@
 // ============================================================
-// TOPIC: Generics  (ek hi code jo alag alag types par chale)
+// TOPIC: Generics  (one piece of code that works on different types)
 // ============================================================
 // Run:  rustc generics.rs && ./generics
 // ------------------------------------------------------------
-// Generic = type ko <T> se placeholder ki tarah likhna, taaki same
-// function/struct kai types ke saath kaam kare. (Code repeat na ho.)
+// Generic = writing type as a <T> placeholder so the same
+// function/struct works with many types. (Avoids repeating code.)
 
 // ---------- 1) Generic FUNCTION ----------
-// <T: PartialOrd> matlab T aisa type ho jise compare (>) kar sake
+// <T: PartialOrd> means T must be a type that can be compared (>)
 fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut max = list[0];
     for &item in list {
@@ -19,21 +19,21 @@ fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
 }
 
 // ---------- 2) Generic STRUCT ----------
-// Point kisi bhi type ke coordinates rakh sakta hai
+// Point can hold coordinates of any type
 #[derive(Debug)]
 struct Point<T> {
     x: T,
     y: T,
 }
 
-// Generic struct par methods
+// Methods on a generic struct
 impl<T: std::fmt::Display> Point<T> {
     fn show(&self) {
         println!("Point -> x: {}, y: {}", self.x, self.y);
     }
 }
 
-// ---------- 3) Do alag generic types ----------
+// ---------- 3) Two different generic types ----------
 #[derive(Debug)]
 struct Pair<A, B> {
     first: A,
@@ -41,15 +41,15 @@ struct Pair<A, B> {
 }
 
 fn main() {
-    // Generic function -> integer par
+    // Generic function -> on integers
     let numbers = vec![3, 7, 2, 9, 4];
     println!("Sabse bada number = {}", largest(&numbers));
 
-    // Wahi function -> char par (bina code badle!)
+    // Same function -> on char (without changing the code!)
     let chars = vec!['a', 'z', 'm', 'k'];
     println!("Sabse bada char = {}", largest(&chars));
 
-    // float par
+    // on float
     let floats = vec![1.5, 3.9, 2.2];
     println!("Sabse bada float = {}", largest(&floats));
 
@@ -61,7 +61,7 @@ fn main() {
     let p2 = Point { x: 1.1, y: 2.2 };
     p2.show();
 
-    // Do alag types ek saath
+    // Two different types together
     let mix = Pair { first: "umar", second: 21 };
     println!("Pair = {:?}", mix);
 }

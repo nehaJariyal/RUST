@@ -1,11 +1,11 @@
 // ============================================================
-// PROJECT: Calculator  (ek chhota calculator - saare concepts ek saath)
+// PROJECT: Calculator  (a small calculator - all concepts together)
 // ============================================================
 // Run:  rustc calculator.rs && ./calculator
 // ------------------------------------------------------------
-// Is project me use kiya: enum, match, Result, error handling, functions.
+// Concepts used: enum, match, Result, error handling, functions.
 
-// Operation ke types (enum)
+// Types of operations (enum)
 #[derive(Debug)]
 enum Operation {
     Add,
@@ -14,7 +14,7 @@ enum Operation {
     Divide,
 }
 
-// Calculation karta hai. Divide-by-zero par Err deta hai (Result).
+// Performs calculation. Returns Err on divide-by-zero (Result).
 fn calculate(a: f64, b: f64, op: &Operation) -> Result<f64, String> {
     match op {
         Operation::Add => Ok(a + b),
@@ -30,9 +30,9 @@ fn calculate(a: f64, b: f64, op: &Operation) -> Result<f64, String> {
     }
 }
 
-// Sundar tarike se result print karta hai
+// Prints the result in a nice format
 fn print_result(a: f64, b: f64, op: &Operation) {
-    // symbol nikalne ke liye match
+    // match to get the symbol
     let symbol = match op {
         Operation::Add => "+",
         Operation::Subtract => "-",
@@ -49,7 +49,7 @@ fn print_result(a: f64, b: f64, op: &Operation) {
 fn main() {
     println!("===== Rust Calculator =====");
 
-    // Alag alag operations chalate hai
+    // Run different operations
     print_result(10.0, 5.0, &Operation::Add);
     print_result(10.0, 5.0, &Operation::Subtract);
     print_result(10.0, 5.0, &Operation::Multiply);
@@ -58,7 +58,7 @@ fn main() {
     // Error case: divide by zero
     print_result(8.0, 0.0, &Operation::Divide);
 
-    // Ek chhoti list par calculations
+    // Calculations on a small list
     println!("\n----- Batch calculations -----");
     let jobs = [
         (2.0, 3.0, Operation::Add),
